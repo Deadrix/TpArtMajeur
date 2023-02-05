@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{% block title %}ArtMajeur{% endblock %}</title>
+        {% block stylesheets %} {{ encore_entry_link_tags('app') }} {% endblock %}
+    </head>
+
+    <body id="body" class="d-flex flex-column vh-100">
+
+    <header class="border-bottom border-2 mb-3">
+        <div class="container">
+            {% block header %}
+                {% include('inc/header.html.twig') %}
+            {% endblock %}
+        </div>
+    </header>
+
+    <main class="d-flex justify-content-center flex-column flex-grow-1">
+
+        {% for message in app.flashes('success') %}
+            <div class="container alert alert-success justify-content-start">
+                {{ message }}
+            </div>
+        {% endfor %}
+
+        <div class="container">
+            {% block body %}
+            {% endblock %}
+        </div>
+    </main>
+
+    <footer class="border-top border-2 bord mt-3">
+        <div class="container my-3">
+            {% block footer %}
+                {% include('inc/footer.html.twig') %}
+            {% endblock %}
+        </div>
+    </footer>
+
+    {% block javascripts %} {{ encore_entry_script_tags('app') }} {% endblock %}
+
+    </body>
+
+</html>

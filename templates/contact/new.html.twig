@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} {{ parent() }} | Contact {% endblock %}
+
+{% block body %}
+
+    <h1>Contact</h1>
+    {{ include('contact/_form.html.twig') }}
+
+{% endblock %}

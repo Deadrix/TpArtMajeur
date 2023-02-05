@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} | Accueil{% endblock %}
+
+{% block body %}
+
+        <span class="sansSerifFont fs-1">TP Art Majeur - </span>
+        <span class="sansSerifFont fs-3">Formulaire de contact</span>
+
+        <div class="mt-5">
+            <a href="{{ path('new') }}" title="Nouveau contact" class="btn btn-lg btn-outline-primary">
+                Contactez-nous
+            </a>
+        </div>
+
+{% endblock %}
+
+{% block footer %}
+    <div class="d-flex justify-content-between my-3">
+        {{ parent() }}
+        <a href="{{ path('backOffice') }}" class="text-decoration-none text-black sansSerifFont">
+            Back-Office
+        </a>
+    </div>
+{% endblock %}

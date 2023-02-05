@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} | Back Office{% endblock %}
+
+{% block body %}
+
+    {% if internautes %}
+        <div class="accordion" id="internautes">
+            {% for internaute in internautes %}
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="heading-{{ internaute.id }}">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#internaute-{{ internaute.id }}" aria-expanded="true" aria-controls="internaute-{{ internaute.id }}">
+                            Mme/M {{ internaute.name }} - {{ internaute.email }}
+                        </button>
+                    </h2>
+                    <div id="internaute-{{ internaute.id }}" class="accordion-collapse collapse show" aria-labelledby="heading-{{ internaute.id }}" data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            {% for question in questions %}
+                                {% if question.internauteObject == internaute %}
+                                    <table class="table">
+                                        <tr>
+                                            <th>
+                                                <input type="checkbox" {% if question.checked == 1 %} checked {% endif %} onclick="returnId({{ question.id }})">
+                                            </th>
+                                            <td>
+                                                <span class="text-break">{{ question.content }}</span>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+    {% else %}
+        Pas de messages
+    {% endif %}
+
+    <script>
+        function returnId(questionId) {
+            $.ajax({
+                type:"post",
+                url: "{{ path('backOffice') }}",
+                data: {questionId: questionId},
+                async: true,
+            });
+        }</script>
+
+{% endblock %}
+
+{% block footer %}
+
+    <div class="d-flex justify-content-between my-3">
+        {{ parent() }}
+        <a href="{{ path('app_logout') }}" class="text-decoration-none text-black sansSerifFont">
+            Se déconnecter
+        </a>
+    </div>
+
+{% endblock %}
