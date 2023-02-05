@@ -26,15 +26,8 @@ class ContactController extends AbstractController
     }
 
     /**
-     * @Route("/test", name="test")
-     */
-    public function test(): Response
-    {
-        return $this->render('contact/test.html.twig', []);
-    }
-
-    /**
-     * @Route("/new", name="new")
+     * Page de création d'un nouveau contact
+     * @Route("/contact", name="new")
      */
     public function new(Request $request, InternauteRepository $internauteRepository, EntityManagerInterface $entityManager, JsonGenerator $jsonGenerator): Response{
 
@@ -46,8 +39,10 @@ class ContactController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
+            // Tentative de récupération l'internaute sur la BDD via le mail saisi.
             $internaute = $internauteRepository->findOneBy(['email' => $form->get("email")->getData()]);
 
+            // Si il n'y a pas cet utilisateur dans la BDD, le créé avec les infos du formulaire.
             if(!$internaute) {
                 $internaute = $form->getData();
             }
@@ -57,6 +52,7 @@ class ContactController extends AbstractController
             $entityManager->persist($internaute);
             $entityManager->flush();
 
+            // Création du fichier JSON contenant les informations de contact ainsi que la demande.
             $jsonGenerator->generateJsonFile("../", $internaute->getEmail(), $internaute->getName(), $question->getContent(), $question->getId());
 
             $this->addFlash('success', 'Votre demande à bien été transmise, nous revenons vers vous au plus vite');
@@ -72,12 +68,14 @@ class ContactController extends AbstractController
     }
 
     /**
+     * Page regroupant toute les demandes de contact.
      * @Route("/backOffice", name="backOffice")
      */
     public function backOffice(Request $request, InternauteRepository $internauteRepository, QuestionRepository $questionRepository, EntityManagerInterface $entityManager): Response{
 
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
+        // Gestion des requêtes ajax pour switch l'état vérifié des questions de manière transparente pour l'administrateur
         if ($request->isXmlHttpRequest()) {
             $question = $questionRepository->find($request->request->get('questionId'));
             $question->setChecked(!$question->getChecked());

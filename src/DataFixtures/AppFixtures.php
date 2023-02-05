@@ -6,9 +6,7 @@ use App\Entity\Internaute;
 use App\Entity\Question;
 use App\Entity\User;
 use App\Repository\UserRepository;
-use App\Service\CreateAdmin;
 use App\Service\JsonGenerator;
-use Couchbase\UserManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -26,6 +24,11 @@ class AppFixtures extends Fixture
         $this->jsonGenerator = $jsonGenerator;
     }
 
+    /**
+     * Création de 10 internautes ayant chacun posé entre 1 et 5 questions.
+     * Création des fichiers JSON correspondant
+     * Création d'un admin
+     */
     public function load(ObjectManager $manager): void
     {
         for ($i = 1; $i <= 10; $i++) {
