@@ -27,7 +27,7 @@ class Question
 
     /**
      * @ORM\Column(type="boolean")
-     * @Assert\NotBlank(message="Veuillez définir l'état "vérifié" de la question")
+     * @Assert\NotBlank(message="Veuillez définir l'état vérifié de la question")
      */
     private $checked = 0;
 
